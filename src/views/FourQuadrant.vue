@@ -63,17 +63,22 @@ export default {
   data(){
     return {
       content: '',
-      todoList,
+      todoList: [],
       curIdx: 0,
-      selectedList: todoList[1]
+      selectedList: {}
     }
   },
   mounted() {
-    
+    const fourQuadrant = window.localStorage.getItem('fourQuadrant')
+    this.todoList = fourQuadrant ? JSON.parse(fourQuadrant) : todoList;
+    this.selectedList = this.todoList[1]
+
+    window.addEventListener("beforeunload",()=>{
+        window.localStorage.setItem('fourQuadrant', JSON.stringify(this.todoList))
+    })
   },
   methods: {
     addItem(){
-
       if(!this.content) return
       const item = {
         content: this.content,
@@ -90,7 +95,7 @@ export default {
       this.curIdx = res
       this.selectedList = this.todoList[this.curIdx]
     }
-  }
+  },
 }
 </script>
 <style scoped lang="scss">
