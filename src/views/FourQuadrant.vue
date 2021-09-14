@@ -2,28 +2,59 @@
   <div class="four-quadrant-wrapper">
     <span>四象限管理</span>
     <div class="four-quadrant">
-      <div class="box color-1">
-        <span>重要不紧急</span>
-        <todo-item v-for="(item, idx) in list10" :key="idx" :config="item" :idx="idx" :list="list10" @del-item="delItem"></todo-item>
-      </div>
-      <div class="box color-2">
-        <span>重要且紧急</span>
-      </div>
-      <div class="box color-3">
-        <span>不重要紧急</span>
-      </div>
-      <div class="box color-4">
-        <span>不紧急不重要</span>
+      <div class="box" v-for="conf in todoList" :key="conf.id" :style="{background: conf.color}">
+        <span>{{conf.label}}</span>
+        <todo-item v-for="(item, idx) in conf.list" :key="idx" :config="item" :idx="idx" :list="conf.list" @del-item="delItem"></todo-item>
       </div>
     </div>
     <div class="add-item" @keyup.enter="addItem">
       <input type="text" placeholder="请输入待办事项" v-model="content">
+      <span class="color" @click="changeCur" :style="{background: selectedList.color}"></span>
       <button @click="addItem">+</button>
     </div>
   </div>
 </template>
 <script>
 import TodoItem from '../components/TodoItem.vue'
+const todoList = [
+{
+  color: '#fee4cb',
+  id: 'list10',
+  label: '重要不紧急',
+  list: [
+    {
+      content: '山有木兮木有枝',
+      checked: false,
+    },
+    {
+      content: '明月不谙离恨苦',
+      checked: false,
+    },
+    {
+      content: '距离隔不开，思念变成海',
+      checked: false,
+    }
+  ],
+},
+{
+  color: '#e9e7fd',
+  id: 'list11',
+  label: '重要且紧急',
+  list: []
+},
+{
+  color: '#dbf6fd',
+  id: 'list01',
+  label: '不重要紧急',
+  list: []
+},
+{
+  color: '#ffd3e2',
+  id: 'list00',
+  label: '不紧急不重要',
+  list: []
+}
+]
 export default {
   name: 'FourQuadrant',
   components: {
@@ -32,24 +63,13 @@ export default {
   data(){
     return {
       content: '',
-      list10: [
-        {
-          content: '山有木兮木有枝',
-          checked: false,
-        },
-        {
-          content: '明月不谙离恨苦',
-          checked: false,
-        },
-        {
-          content: '距离隔不开，思念变成海',
-          checked: false,
-        }
-        ],
-      list11: [],
-      list01: [],
-      list00: []
+      todoList,
+      curIdx: 0,
+      selectedList: todoList[1]
     }
+  },
+  mounted() {
+    
   },
   methods: {
     addItem(){
@@ -57,13 +77,18 @@ export default {
       if(!this.content) return
       const item = {
         content: this.content,
-        checked: false
+        checked: false,
       }
-      this.list10.push(item)
+      this.selectedList.list.push(item)
       this.content = ''
     },
     delItem(opt){
       opt.list.splice(opt.idx, 1)
+    },
+    changeCur() {
+      let res = (this.curIdx+1) % 4
+      this.curIdx = res
+      this.selectedList = this.todoList[this.curIdx]
     }
   }
 }
@@ -100,19 +125,6 @@ $cardHeight: 500px;
       border-radius: 8px;
       text-align: center;
       color: #555;
-
-    }
-    .color-1 {
-      background: #fee4cb;
-    }
-    .color-2 {
-      background: #e9e7fd;
-    }
-    .color-3 {
-      background: #dbf6fd;
-    }
-    .color-4 {
-      background: #ffd3e2;
     }
   }
   .add-item {
@@ -125,7 +137,7 @@ $cardHeight: 500px;
     input {
       border: none;
       height: 40px;
-      width: 90%;
+      width: 85%;
       margin-left: 15px;
       border-radius: 15px;
       &:hover, &:focus-visible {
@@ -141,6 +153,15 @@ $cardHeight: 500px;
       &:focus-visible {
         outline: none;
       }
+    }
+    .color {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      vertical-align: middle;
+      background: brown;
+      border-radius: 50%;
+      margin-right: 6px;
     }
   }
 }
