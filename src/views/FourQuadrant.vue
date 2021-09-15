@@ -1,10 +1,16 @@
 <template>
   <div class="four-quadrant-wrapper">
-    <span>四象限管理</span>
+    <span>四象限时间管理</span>
     <div class="four-quadrant">
-      <div class="box" v-for="conf in todoList" :key="conf.id" :style="{background: conf.color}">
+      <div class="box" v-for="conf in todoList" :key="conf.id" :style="{background: conf.color}" @click="changeSelected(conf)">
         <span>{{conf.label}}</span>
-        <todo-item v-for="(item, idx) in conf.list" :key="idx" :config="item" :idx="idx" :list="conf.list" @del-item="delItem"></todo-item>
+        <todo-item 
+        v-for="(item, idx) in conf.list" 
+        :key="idx" :config="item" 
+        :idx="idx" 
+        :list="conf.list" 
+        @del-item="delItem"
+        @checked-item="checkedItem"></todo-item>
       </div>
     </div>
     <div class="add-item" @keyup.enter="addItem">
@@ -21,6 +27,7 @@ const todoList = [
   color: '#fee4cb',
   id: 'list10',
   label: '重要不紧急',
+  checkedNum: 0,
   list: [
     {
       content: '山有木兮木有枝',
@@ -40,18 +47,21 @@ const todoList = [
   color: '#e9e7fd',
   id: 'list11',
   label: '重要且紧急',
+  checkedNum: 0,
   list: []
 },
 {
   color: '#dbf6fd',
   id: 'list01',
   label: '不重要紧急',
+  checkedNum: 0,
   list: []
 },
 {
   color: '#ffd3e2',
   id: 'list00',
   label: '不紧急不重要',
+  checkedNum: 0,
   list: []
 }
 ]
@@ -94,6 +104,12 @@ export default {
       let res = (this.curIdx+1) % 4
       this.curIdx = res
       this.selectedList = this.todoList[this.curIdx]
+    },
+    changeSelected(selected) {
+      this.selectedList = selected
+    },
+    checkedItem(data) {
+      data.config.checked = data.checked
     }
   },
 }
@@ -103,8 +119,7 @@ export default {
   font-family: miaomiao;
   src: url('../assets/FZSJ-MIAOMM.TTF')
 }
-$cardWidth: 620px;
-$cardHeight: 500px;
+$cardWidth: 800px;
 .four-quadrant-wrapper {
   width: $cardWidth;
   margin: auto;
@@ -117,16 +132,14 @@ $cardHeight: 500px;
   .four-quadrant {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     box-sizing: border-box;
     width: $cardWidth;
-    height: $cardHeight;
     margin: auto;
     .box {
       width: 100%;
-      height: 100%;
+      min-height: 260px;
       border-radius: 8px;
       text-align: center;
       color: #555;

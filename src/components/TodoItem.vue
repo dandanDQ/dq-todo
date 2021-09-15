@@ -31,6 +31,9 @@ export default {
       checked: false
     }
   },
+  mounted() {
+    this.checked = this.config.checked || false
+  },
   methods: {
     delItem() {
       this.$emit('del-item', {
@@ -40,18 +43,20 @@ export default {
     },
     checkItem() {
       this.checked = !this.checked
+      const data = {
+        config: this.config,
+        checked :this.checked
+      }
+      this.$emit('checked-item', data)
     }
   }
 }
 </script>
 <style scoped lang="scss">
-$itemHeight: 32px;
-
 .todo-item {
   text-align: left;
   padding: 0 10px;
   color: #555;
-  height: $itemHeight;
   border-radius: 4px;
   margin: 6px;
   background: rgba(255, 255, 255, 0.5);
