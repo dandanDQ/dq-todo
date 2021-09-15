@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-item" :class="{'checked-item': checked }">
+  <div class="todo-item" :class="{'checked-item': config.checked }">
     <span class="check" @click="checkItem"></span>
     {{config.content}}
     <span class="close" @click="delItem"></span>
@@ -28,7 +28,6 @@ export default {
   },
   data() {
     return {
-      checked: false
     }
   },
   mounted() {
@@ -42,10 +41,8 @@ export default {
       })
     },
     checkItem() {
-      this.checked = !this.checked
       const data = {
         config: this.config,
-        checked :this.checked
       }
       this.$emit('checked-item', data)
     }

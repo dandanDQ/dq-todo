@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/dq-todo/',
   chainWebpack: config => {
     config
       .plugin('html')

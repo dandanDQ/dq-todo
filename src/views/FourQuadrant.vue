@@ -28,6 +28,9 @@ const todoList = [
   id: 'list10',
   label: '重要不紧急',
   checkedNum: 0,
+  rewrite: {
+    value: false
+  },
   list: [
     {
       content: '山有木兮木有枝',
@@ -109,7 +112,7 @@ export default {
       this.selectedList = selected
     },
     checkedItem(data) {
-      data.config.checked = data.checked
+      data.config.checked = !data.config.checked
     }
   },
 }
