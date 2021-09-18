@@ -37,7 +37,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/no-mutating-props": "warn"
+    }
   },
   "browserslist": [
     "> 1%",

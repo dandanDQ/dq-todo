@@ -1,7 +1,7 @@
 <template>
   <div class="todo-item" :class="{'checked-item': config.checked }">
     <span class="check" @click="checkItem"></span>
-    {{config.content}}
+    <input class="item-input" type="text" v-model="config.content">
     <span class="close" @click="delItem"></span>
   </div>
 </template>
@@ -25,13 +25,6 @@ export default {
         return []
       }
     },
-  },
-  data() {
-    return {
-    }
-  },
-  mounted() {
-    this.checked = this.config.checked || false
   },
   methods: {
     delItem() {
@@ -78,6 +71,13 @@ export default {
       opacity: 1;
     }
   }
+  .item-input {
+    outline: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    font: inherit;
+    width: 90%;
+  }
 
 }
 .checked-item {
@@ -89,6 +89,9 @@ export default {
       content: '\2713';
       opacity: 1;
     }
+  }
+  .item-input {
+    color: rgb(165, 165, 165);
   }
 }
 </style>
