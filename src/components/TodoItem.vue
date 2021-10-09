@@ -1,6 +1,7 @@
 <template>
   <div class="todo-item" :class="{'checked-item': config.checked }">
     <span class="check" @click="checkItem"></span>
+    <span class="archive" @click="archiveItem"></span>
     <input class="item-input" type="text" v-model="config.content">
     <span class="close" @click="delItem"></span>
   </div>
@@ -38,6 +39,12 @@ export default {
         config: this.config,
       }
       this.$emit('checked-item', data)
+    },
+    archiveItem() {
+      this.$emit('archive-item', {
+        idx: this.idx,
+        list: this.list
+      })
     }
   }
 }
@@ -71,12 +78,22 @@ export default {
       opacity: 1;
     }
   }
+  .archive {
+    &::before {
+      content: '\2702';
+      opacity: 0.2;
+    }
+    &:hover::before {
+      color: #f4be37;
+      opacity: 1;
+    }
+  }
   .item-input {
     outline: none;
     border: none;
     background: rgba(255, 255, 255, 0.1);
     font: inherit;
-    width: 90%;
+    width: 85%;
   }
 
 }
