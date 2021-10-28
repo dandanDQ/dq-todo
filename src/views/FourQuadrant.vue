@@ -120,11 +120,14 @@ export default {
         window.localStorage.setItem('archiveList', JSON.stringify(this.archiveList))
     })
     this.$nextTick(() => {
-      new Draggable({
-        element: document.querySelector('#list11'),
-        cloneElementClassName: 'clone-column-item',
-        childrenClassName: 'column-item'
-      });
+      for(const todo of todoList) {
+        new Draggable({
+          element: document.querySelector(`#${todo.id}`),
+          cloneElementClassName: 'clone-column-item',
+          draggerClassName: 'dragger'
+        });
+      }
+
     })
 
   },

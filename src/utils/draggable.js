@@ -10,7 +10,7 @@ class Draggable {
     this.clone = { element: null, x: 0, y: 0 };
     this.lastPointermove = { x: 0, y: 0 };
     this.rectList = []; // 用于保存拖拽项getBoundingClientRect()方法获得的数据
-    this.childrenClassName = options.childrenClassName
+    this.draggerClassName = options.draggerClassName
     this.init();
   }
   init() {
@@ -26,23 +26,22 @@ class Draggable {
   }
   handlePointerdown(e) {
       // 如果是鼠标点击，只响应左键
+      console.log('e', e)
       if (e.pointerType === 'mouse' && e.button !== 0) {
           return;
       }
       if (e.target === this.parent) {
           return;
       }
-      console.log('e',e.target ,typeof e.target.className, this.childrenClassName)
-      // 如果不是直接子元素，返回
-      if (e.target.className.indexOf(this.childrenClassName) === -1) {
+      if (e.target.className.indexOf(this.draggerClassName) === -1) {
         return;
       }
-      console.log(e, 'e')
+      const parentNode = e.target.parentNode
       this.isPointerdown = true;
       this.parent.setPointerCapture(e.pointerId);
       this.lastPointermove.x = e.clientX;
       this.lastPointermove.y = e.clientY;
-      this.drag.element = e.target;
+      this.drag.element = parentNode;
       this.drag.element.classList.add('active');
       this.clone.element = this.drag.element.cloneNode(true);
       this.clone.element.className = this.cloneElementClassName;

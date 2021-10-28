@@ -1,5 +1,6 @@
 <template>
   <div class="todo-item" :class="{'checked-item': config.checked }">
+    <span class="dragger"></span>
     <span class="check" @click="checkItem"></span>
     <span class="archive" @click="archiveItem"></span>
     <input class="item-input" type="text" v-model="config.content">
@@ -45,7 +46,7 @@ export default {
         idx: this.idx,
         list: this.list
       })
-    }
+    },
   }
 }
 </script>
@@ -57,6 +58,14 @@ export default {
   border-radius: 4px;
   margin: 6px;
   background: rgba(255, 255, 255, 0.5);
+
+  .dragger {
+    &::before {
+      content: '\039E';
+      opacity: 0.5;
+      color: #a8456b;
+    }
+  }
   .close {
     float: right;
     &::before {
@@ -93,7 +102,7 @@ export default {
     border: none;
     background: rgba(255, 255, 255, 0.1);
     font: inherit;
-    width: 85%;
+    width: 80%;
   }
 
 }
