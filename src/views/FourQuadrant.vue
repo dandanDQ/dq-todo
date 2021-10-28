@@ -3,7 +3,14 @@
     <div class="four-quadrant-content">
       <span>四象限时间管理</span>
       <div class="four-quadrant">
-        <div class="box" v-for="conf in todoList" :key="conf.id" :style="{background: conf.color}" @click="changeSelected(conf)">
+        <div
+          class="box" 
+          v-for="conf in todoList" 
+          :key="conf.id" 
+          :style="{background: conf.color}" 
+          @click="changeSelected(conf)"
+          :id="conf.id"
+        >
           <span>{{conf.label}}</span>
           <todo-item 
           v-for="(item, idx) in conf.list" 
@@ -12,7 +19,8 @@
           :list="conf.list" 
           @del-item="delItem"
           @checked-item="checkedItem"
-          @archive-item="archiveItem"></todo-item>
+          @archive-item="archiveItem"
+          class="column-item"></todo-item>
         </div>
       </div>
       <div class="add-item" @keyup.enter="addItem">
@@ -36,10 +44,10 @@
       </div>
     </div>
   </div>
-
 </template>
 <script>
 import TodoItem from '../components/TodoItem.vue'
+import Draggable from '../utils/draggable.js'
 const todoList = [
 {
   color: '#fee4cb',
@@ -111,6 +119,13 @@ export default {
         window.localStorage.setItem('fourQuadrant', JSON.stringify(this.todoList))
         window.localStorage.setItem('archiveList', JSON.stringify(this.archiveList))
     })
+    this.$nextTick(() => {
+      new Draggable({
+        element: document.querySelector('#list11'),
+        cloneElementClassName: 'clone-column-item',
+        childrenClassName: 'column-item'
+      });
+    })
 
   },
   methods: {
@@ -142,7 +157,7 @@ export default {
       opt.list.splice(opt.idx, 1);
       console.log(item, 'item', opt, 'opt')
       this.archiveList.push(item)
-    }
+    },
   },
 }
 </script>

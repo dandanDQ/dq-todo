@@ -1,5 +1,6 @@
 module.exports = {
   publicPath: '/dq-todo/',
+  lintOnSave: process.env.NODE_ENV === 'development',
   chainWebpack: config => {
     config
       .plugin('html')
